@@ -6,17 +6,20 @@
     118 种元素，宇宙的 5%，尽在指尖绽放。
   </p>
 
-  <h3>
-    👉 <a href="https://seanwong17.github.io/Future-Style-Periodic-Table/">点击进入：沉浸式体验 (Live Demo)</a> 👈
-  </h3>
-
   <p>
+    <a href="https://github.com/ruanyf/weekly/blob/master/docs/issue-383.md">
+        <img src="https://img.shields.io/badge/科技爱好者周刊-第383期推荐-ff69b4?style=flat-square&logo=rss" alt="Tech Enthusiast Weekly">
+    </a>
     <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
     <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5">
     <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3">
     <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript">
-    <img src="https://img.shields.io/badge/Responsive-Yes-blueviolet?style=flat-square" alt="Responsive">
   </p>
+
+  <h3>
+    👉 <a href="https://seanwong17.github.io/Future-Style-Periodic-Table/">点击进入：沉浸式体验 (Live Demo)</a> 👈
+  </h3>
+
 </div>
 
 ---
