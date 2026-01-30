@@ -10,6 +10,7 @@ let rotX = 0;
 let rotY = 0;
 let isDragging = false;
 let lastMouseX, lastMouseY;
+let currentElement = null; // 追蹤當前選中的元素
 
 // === 获取元素在周期表中的位置 ===
 function getPos(n) {
@@ -83,7 +84,8 @@ function init() {
     categories.forEach((c, i) => {
         const btn = document.createElement('div');
         btn.className = 'legend-item';
-        btn.innerHTML = `<div class="legend-color" style="background:${c.color}"></div>${c.name}`;
+        const categoryName = i18n.getCategoryName(i); // 使用 i18n 獲取分類名稱
+        btn.innerHTML = `<div class="legend-color" style="background:${c.color}"></div>${categoryName}`;
         btn.onclick = () => toggleCategory(i, btn);
         legend.appendChild(btn);
     });
@@ -360,6 +362,7 @@ function initDragControl() {
 
 // === 显示弹窗 ===
 function showModal(data) {
+    currentElement = data; // 存儲當前選中的元素
     rotX = 0;
     rotY = 0;
     atomContainer.style.transform = `rotateX(0deg) rotateY(0deg)`;
@@ -368,7 +371,7 @@ function showModal(data) {
     document.getElementById('m-symbol').style.color = data.cat.color;
     document.getElementById('m-name').innerText = data.name;
     document.getElementById('m-en-name').innerText = data.enName;
-    document.getElementById('m-cat').innerText = data.cat.name;
+    document.getElementById('m-cat').innerText = i18n.getCategoryName(data.catId); // 使用 i18n 獲取分類名稱
     document.getElementById('m-cat').style.borderColor = data.cat.color;
     document.getElementById('m-cat').style.color = data.cat.color;
 
@@ -466,6 +469,79 @@ function initKeyboard() {
 modal.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
 });
+
+// === 多語言支持函數 ===
+function switchLanguage(lang) {
+    i18n.setLanguage(lang);
+    updateUIText();
+    updateCategoryNames();
+    
+    // 更新語言按鈕的活躍狀態
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+}
+
+function updateUIText() {
+    // 更新主標題
+    document.getElementById('pageTitle').textContent = i18n.t('title');
+    
+    // 更新旋轉提示
+    document.getElementById('rotateHint').textContent = i18n.t('hint');
+    
+    // 更新模式按鈕
+    document.getElementById('btnStandard').textContent = i18n.t('standard');
+    document.getElementById('btnRadius').textContent = i18n.t('radius');
+    document.getElementById('btnElectro').textContent = i18n.t('electronegativity');
+    document.getElementById('btnIonization').textContent = i18n.t('ionizationEnergy');
+    document.getElementById('btnMelt').textContent = i18n.t('meltingPoint');
+    document.getElementById('btnBoil').textContent = i18n.t('boilingPoint');
+    
+    // 更新搜索框
+    document.getElementById('searchInput').placeholder = i18n.t('search');
+    
+    // 更新模態框中的文本
+    document.getElementById('visualizerHint').textContent = i18n.t('rotate');
+    document.getElementById('labelElectronConfig').textContent = i18n.t('electronConfig');
+    document.getElementById('labelValence').textContent = i18n.t('commonValences');
+    document.getElementById('labelProperties').textContent = i18n.t('physicalProperties');
+    document.getElementById('labelAtomicNum').textContent = i18n.t('atomicNumber');
+    document.getElementById('labelAtomicMass').textContent = i18n.t('atomicMass');
+    document.getElementById('labelAtomicRad').textContent = i18n.t('atomicRadius');
+    document.getElementById('labelElectroNeg').textContent = i18n.t('electronegativity_label');
+    document.getElementById('labelIonEnergy').textContent = i18n.t('ionizationEnergy_label');
+    document.getElementById('labelMelt').textContent = i18n.t('meltingPoint_label');
+    document.getElementById('labelBoil').textContent = i18n.t('boilingPoint_label');
+    document.getElementById('labelIsotopes').textContent = i18n.t('isotopes');
+    
+    // 更新圖例中的分類名稱
+    updateCategoryNames();
+    
+    // 重新顯示當前選中的元素（如果有的話）
+    if (currentActiveCategory !== null) {
+        const modal = document.getElementById('modal');
+        if (modal.style.display !== 'none' && modal.style.opacity !== '0') {
+            updateModalDisplay();
+        }
+    }
+}
+
+function updateCategoryNames() {
+    const legendItems = document.querySelectorAll('.legend-item');
+    legendItems.forEach((item, index) => {
+        const colorDiv = item.querySelector('.legend-color');
+        const categoryName = i18n.getCategoryName(index);
+        item.innerHTML = `<div class="legend-color" style="background:${categories[index].color}"></div>${categoryName}`;
+    });
+}
+
+function updateModalDisplay() {
+    // 更新當前顯示的元素信息中的分類名稱
+    const catIndex = currentElement.catId;
+    const catName = i18n.getCategoryName(catIndex);
+    document.getElementById('m-cat').textContent = catName;
+}
 
 // === 启动应用 ===
 init();

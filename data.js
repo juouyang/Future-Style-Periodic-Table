@@ -1,15 +1,15 @@
 // === 元素分类数据 ===
 const categories = [
-    { name: "碱金属", color: "#ff5252" }, 
-    { name: "碱土金属", color: "#ffb142" },
-    { name: "过渡金属", color: "#706fd3" }, 
-    { name: "后过渡金属", color: "#33d9b2" },
-    { name: "类金属", color: "#34ace0" }, 
-    { name: "非金属", color: "#ffda79" },
-    { name: "卤素", color: "#218c74" }, 
-    { name: "稀有气体", color: "#b33939" },
-    { name: "镧系", color: "#f78fb3" }, 
-    { name: "锕系", color: "#cd84f1" }
+    { name: "碱金属", nameZhTW: "鹼金屬", color: "#ff5252" }, 
+    { name: "碱土金属", nameZhTW: "鹼土金屬", color: "#ffb142" },
+    { name: "过渡金属", nameZhTW: "過渡金屬", color: "#706fd3" }, 
+    { name: "后过渡金属", nameZhTW: "後過渡金屬", color: "#33d9b2" },
+    { name: "类金属", nameZhTW: "類金屬", color: "#34ace0" }, 
+    { name: "非金属", nameZhTW: "非金屬", color: "#ffda79" },
+    { name: "卤素", nameZhTW: "鹵素", color: "#218c74" }, 
+    { name: "稀有气体", nameZhTW: "稀有氣體", color: "#b33939" },
+    { name: "镧系", nameZhTW: "鑭系", color: "#f78fb3" }, 
+    { name: "锕系", nameZhTW: "錒系", color: "#cd84f1" }
 ];
 
 // === 元素原始数据 ===
