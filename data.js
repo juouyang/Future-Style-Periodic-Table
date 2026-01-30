@@ -157,6 +157,7 @@ const elements = elementsData.map(e => ({
     idx: e.z,
     sym: e.sym,
     name: e.name,
+    nameZhTW: e.nameZhTW,
     enName: e.enName,
     mass: e.mass,
     cat: categories[e.cat],
