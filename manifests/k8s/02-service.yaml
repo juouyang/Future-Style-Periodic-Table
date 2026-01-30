@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: periodic-table-service
+  namespace: periodic-table
+  labels:
+    app: periodic-table-app
+    app.kubernetes.io/instance: periodic-table
+spec:
+  type: ClusterIP
+  selector:
+    app: periodic-table-app
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP

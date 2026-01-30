@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: periodic-table-ingress
+  namespace: periodic-table
+  annotations:
+    nginx.org/client-max-body-size: "0"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: periodic-table.apps.k8s.juouyang.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: periodic-table-service
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - periodic-table.apps.k8s.juouyang.com
