@@ -541,9 +541,14 @@ function updateCategoryNames() {
 
 function updateElementNames() {
     // 更新週期表中所有元素的名稱
-    document.querySelectorAll('.element .name').forEach((nameEl, idx) => {
-        if (elements[idx]) {
-            nameEl.textContent = i18n.getElementName(elements[idx]);
+    document.querySelectorAll('.element').forEach(el => {
+        if (!el.classList.contains('placeholder')) {
+            const idx = parseInt(el.dataset.idx);
+            const element = elements[idx - 1];
+            if (element) {
+                const nameEl = el.querySelector('.name');
+                nameEl.textContent = i18n.getElementName(element);
+            }
         }
     });
 }
