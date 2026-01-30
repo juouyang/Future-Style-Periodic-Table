@@ -29,6 +29,7 @@ const i18n = {
             'boilingPoint_label': '沸點 (K)',
             'isotopes': '同位素 (● 穩定)',
             'language': '語言',
+            'noData': '暫無數據',
             
             // 元素分類
             'alkaliMetal': '鹼金屬',
@@ -40,7 +41,9 @@ const i18n = {
             'halogen': '鹵素',
             'nobleGas': '稀有氣體',
             'lanthanide': '鑭系',
-            'actinide': '錒系'
+            'actinide': '錒系',
+            'lanthanides': '鑭系',
+            'actinides': '錒系'
         },
         'zh-CN': {
             // UI 标签
@@ -67,6 +70,7 @@ const i18n = {
             'boilingPoint_label': '沸点 (K)',
             'isotopes': '同位素 (● 稳定)',
             'language': '语言',
+            'noData': '暂无数据',
             
             // 元素分类
             'alkaliMetal': '碱金属',
@@ -78,14 +82,58 @@ const i18n = {
             'halogen': '卤素',
             'nobleGas': '稀有气体',
             'lanthanide': '镧系',
-            'actinide': '锕系'
+            'actinide': '锕系',
+            'lanthanides': '镧系',
+            'actinides': '锕系'
+        },
+        'en': {
+            // UI Labels
+            'title': 'Periodic Table',
+            'hint': '💡 Better view in landscape mode',
+            'standard': 'Standard',
+            'radius': 'Radius',
+            'electronegativity': 'Electronegativity',
+            'ionizationEnergy': 'Ionization Energy',
+            'meltingPoint': 'Melting Point',
+            'boilingPoint': 'Boiling Point',
+            'search': 'Search elements...',
+            'rotate': 'Drag to rotate view',
+            'electronConfig': 'Electron Configuration',
+            'perLayer': 'Layers',
+            'commonValences': 'Common Oxidation States',
+            'physicalProperties': 'Physical Properties',
+            'atomicNumber': 'Atomic Number',
+            'atomicMass': 'Atomic Mass',
+            'atomicRadius': 'Atomic Radius (pm)',
+            'electronegativity_label': 'Electronegativity',
+            'ionizationEnergy_label': 'Ionization Energy (kJ/mol)',
+            'meltingPoint_label': 'Melting Point (K)',
+            'boilingPoint_label': 'Boiling Point (K)',
+            'isotopes': 'Isotopes (● Stable)',
+            'language': 'Language',
+            'noData': 'No data',
+            
+            // Element Categories
+            'alkaliMetal': 'Alkali Metal',
+            'alkalineEarthMetal': 'Alkaline Earth Metal',
+            'transitionMetal': 'Transition Metal',
+            'postTransitionMetal': 'Post-transition Metal',
+            'semimetal': 'Metalloid',
+            'nonmetal': 'Nonmetal',
+            'halogen': 'Halogen',
+            'nobleGas': 'Noble Gas',
+            'lanthanide': 'Lanthanide',
+            'actinide': 'Actinide',
+            'lanthanides': 'Lanthanides',
+            'actinides': 'Actinides'
         }
     },
     
-    // 元素分類繁體中文翻譯
+    // 元素分類翻譯
     categoriesTranslations: {
         'zh-TW': ['鹼金屬', '鹼土金屬', '過渡金屬', '後過渡金屬', '類金屬', '非金屬', '鹵素', '稀有氣體', '鑭系', '錒系'],
-        'zh-CN': ['碱金属', '碱土金属', '过渡金属', '后过渡金属', '类金属', '非金属', '卤素', '稀有气体', '镧系', '锕系']
+        'zh-CN': ['碱金属', '碱土金属', '过渡金属', '后过渡金属', '类金属', '非金属', '卤素', '稀有气体', '镧系', '锕系'],
+        'en': ['Alkali Metal', 'Alkaline Earth Metal', 'Transition Metal', 'Post-transition Metal', 'Metalloid', 'Nonmetal', 'Halogen', 'Noble Gas', 'Lanthanide', 'Actinide']
     },
     
     // 簡繁對應表（用於元素名稱）
@@ -118,6 +166,8 @@ const i18n = {
         if (typeof index === 'number' && typeof categories !== 'undefined') {
             if (this.currentLang === 'zh-TW' && categories[index]?.nameZhTW) {
                 return categories[index].nameZhTW;
+            } else if (this.currentLang === 'en') {
+                return this.categoriesTranslations['en'][index] || categories[index].name;
             } else if (categories[index]?.name) {
                 return categories[index].name;
             }
@@ -145,6 +195,8 @@ const i18n = {
     getElementName: function(elementData) {
         if (this.currentLang === 'zh-TW' && elementData.nameZhTW) {
             return elementData.nameZhTW;
+        } else if (this.currentLang === 'en' && elementData.enName) {
+            return elementData.enName;
         }
         return elementData.name;
     },

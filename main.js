@@ -113,11 +113,11 @@ function init() {
         table.appendChild(el);
     });
 
-    // 创建镧系/锕系占位符
-    const placeholders = [
-        { row: 6, col: 3, sym: "57-71", name: "镧系", catIdx: 8, range: "La - Lu" },
-        { row: 7, col: 3, sym: "89-103", name: "锕系", catIdx: 9, range: "Ac - Lr" }
-    ];
+     // 创建镧系/锕系占位符
+     const placeholders = [
+         { row: 6, col: 3, sym: "57-71", name: i18n.currentLang === 'en' ? 'Lanthanides' : (i18n.currentLang === 'zh-TW' ? '鑭系' : '镧系'), catIdx: 8, range: "La - Lu" },
+         { row: 7, col: 3, sym: "89-103", name: i18n.currentLang === 'en' ? 'Actinides' : (i18n.currentLang === 'zh-TW' ? '錒系' : '锕系'), catIdx: 9, range: "Ac - Lr" }
+     ];
 
     placeholders.forEach(p => {
         const el = document.createElement('div');
@@ -179,18 +179,19 @@ function toggleCategory(catId, btn) {
                     el.style.filter = 'grayscale(100%)';
                 }
             }
-            else if (el.classList.contains('placeholder')) {
-                const phName = el.querySelector('.name').innerText;
-                const isRelated = (catId === 8 && phName === '镧系') || (catId === 9 && phName === '锕系');
+             else if (el.classList.contains('placeholder')) {
+                 const phName = el.querySelector('.name').innerText;
+                 const isLanthanideActive = catId === 8 && (phName === '镧系' || phName === '鑭系' || phName === 'Lanthanides');
+                 const isActinideActive = catId === 9 && (phName === '锕系' || phName === '錒系' || phName === 'Actinides');
 
-                if (isRelated) {
-                    el.style.opacity = '1';
-                    el.style.background = 'rgba(255,255,255,0.1)';
-                } else {
-                    el.style.opacity = '0.3';
-                    el.style.background = 'transparent';
-                }
-            }
+                 if (isLanthanideActive || isActinideActive) {
+                     el.style.opacity = '1';
+                     el.style.background = 'rgba(255,255,255,0.1)';
+                 } else {
+                     el.style.opacity = '0.3';
+                     el.style.background = 'transparent';
+                 }
+             }
         });
     }
 }
@@ -367,11 +368,30 @@ function showModal(data) {
     rotY = 0;
     atomContainer.style.transform = `rotateX(0deg) rotateY(0deg)`;
 
+    // 更新標籤文本
+    document.getElementById('labelElectronConfig').textContent = i18n.t('electronConfig');
+    document.getElementById('labelValence').textContent = i18n.t('commonValences');
+    document.getElementById('labelProperties').textContent = i18n.t('physicalProperties');
+    document.getElementById('labelAtomicNum').textContent = i18n.t('atomicNumber');
+    document.getElementById('labelAtomicMass').textContent = i18n.t('atomicMass');
+    document.getElementById('labelAtomicRad').textContent = i18n.t('atomicRadius');
+    document.getElementById('labelElectroNeg').textContent = i18n.t('electronegativity_label');
+    document.getElementById('labelIonEnergy').textContent = i18n.t('ionizationEnergy_label');
+    document.getElementById('labelMelt').textContent = i18n.t('meltingPoint_label');
+    document.getElementById('labelBoil').textContent = i18n.t('boilingPoint_label');
+    document.getElementById('labelIsotopes').textContent = i18n.t('isotopes');
+    document.getElementById('visualizerHint').textContent = i18n.t('rotate');
+
     document.getElementById('m-symbol').innerText = data.sym;
     document.getElementById('m-symbol').style.color = data.cat.color;
-    document.getElementById('m-name').innerText = i18n.getElementName(data); // 使用 i18n 獲取元素名稱
-    document.getElementById('m-en-name').innerText = data.enName;
-    document.getElementById('m-cat').innerText = i18n.getCategoryName(data.catId); // 使用 i18n 獲取分類名稱
+    document.getElementById('m-name').innerText = i18n.getElementName(data);
+    // 如果是英文模式，在英文名稱旁邊顯示中文；否則在中文名稱旁邊顯示英文
+    if (i18n.currentLang === 'en') {
+        document.getElementById('m-en-name').innerText = data.name; // 簡體中文
+    } else {
+        document.getElementById('m-en-name').innerText = data.enName; // 英文
+    }
+    document.getElementById('m-cat').innerText = i18n.getCategoryName(data.catId);
     document.getElementById('m-cat').style.borderColor = data.cat.color;
     document.getElementById('m-cat').style.color = data.cat.color;
 
@@ -393,7 +413,7 @@ function showModal(data) {
             valenceContainer.appendChild(tag);
         });
     } else {
-        valenceContainer.innerHTML = '<span style="color:#666">暂无数据</span>';
+        valenceContainer.innerHTML = `<span style="color:#666">${i18n.t('noData')}</span>`;
     }
 
     const isotopeContainer = document.getElementById('m-isotopes');
@@ -406,12 +426,12 @@ function showModal(data) {
             isotopeContainer.appendChild(tag);
         });
     } else {
-        isotopeContainer.innerHTML = '<span style="color:#666">暂无数据</span>';
+        isotopeContainer.innerHTML = `<span style="color:#666">${i18n.t('noData')}</span>`;
     }
 
     const eData = getElectronData(data.idx);
     document.getElementById('m-config-sub').innerHTML = eData.str;
-    document.getElementById('m-config-shell').innerText = `分层: ${eData.shells.join(' - ')}`;
+    document.getElementById('m-config-shell').innerText = `${i18n.t('perLayer')}: ${eData.shells.join(' - ')}`;
 
     render3DAtom(data.idx);
     modal.classList.add('open');
@@ -441,10 +461,12 @@ function initSearch() {
             }
             else if (el.dataset.idx) {
                 const d = elements[el.dataset.idx - 1];
-                match = d.name.includes(val) ||
-                    d.sym.toLowerCase().includes(val) ||
-                    String(d.idx) === val ||
-                    d.enName.toLowerCase().includes(val);
+                // 支持多語言搜索
+                match = d.name.includes(val) || // 簡體中文
+                    (d.nameZhTW && d.nameZhTW.includes(val)) || // 繁體中文
+                    d.sym.toLowerCase().includes(val) || // 元素符號
+                    String(d.idx) === val || // 原子序數
+                    d.enName.toLowerCase().includes(val); // 英文名稱
             }
 
             if (val === '') {
@@ -473,14 +495,29 @@ modal.addEventListener('click', (e) => {
 // === 多語言支持函數 ===
 function switchLanguage(lang) {
     i18n.setLanguage(lang);
-    updateUIText();
-    updateCategoryNames();
     
     // 更新語言按鈕的活躍狀態
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.remove('active');
     });
-    event.target.classList.add('active');
+    
+    // 根據語言設置對應的按鈕為活躍
+    if (lang === 'zh-TW') {
+        document.getElementById('btnLangZhTW').classList.add('active');
+    } else if (lang === 'zh-CN') {
+        document.getElementById('btnLangZhCN').classList.add('active');
+    } else if (lang === 'en') {
+        document.getElementById('btnLangEN').classList.add('active');
+    }
+    
+    updateUIText();
+    updateCategoryNames();
+    updateElementNames();
+    
+    // 重新顯示當前選中的元素（如果模態框打開的話）
+    if (modal.classList.contains('open') && currentElement) {
+        updateModalDisplay();
+    }
 }
 
 function updateUIText() {
@@ -500,34 +537,6 @@ function updateUIText() {
     
     // 更新搜索框
     document.getElementById('searchInput').placeholder = i18n.t('search');
-    
-    // 更新模態框中的文本
-    document.getElementById('visualizerHint').textContent = i18n.t('rotate');
-    document.getElementById('labelElectronConfig').textContent = i18n.t('electronConfig');
-    document.getElementById('labelValence').textContent = i18n.t('commonValences');
-    document.getElementById('labelProperties').textContent = i18n.t('physicalProperties');
-    document.getElementById('labelAtomicNum').textContent = i18n.t('atomicNumber');
-    document.getElementById('labelAtomicMass').textContent = i18n.t('atomicMass');
-    document.getElementById('labelAtomicRad').textContent = i18n.t('atomicRadius');
-    document.getElementById('labelElectroNeg').textContent = i18n.t('electronegativity_label');
-    document.getElementById('labelIonEnergy').textContent = i18n.t('ionizationEnergy_label');
-    document.getElementById('labelMelt').textContent = i18n.t('meltingPoint_label');
-    document.getElementById('labelBoil').textContent = i18n.t('boilingPoint_label');
-    document.getElementById('labelIsotopes').textContent = i18n.t('isotopes');
-    
-    // 更新圖例中的分類名稱
-    updateCategoryNames();
-    
-    // 更新所有元素卡片中的元素名稱
-    updateElementNames();
-    
-    // 重新顯示當前選中的元素（如果有的話）
-    if (currentActiveCategory !== null) {
-        const modal = document.getElementById('modal');
-        if (modal.style.display !== 'none' && modal.style.opacity !== '0') {
-            updateModalDisplay();
-        }
-    }
 }
 
 function updateCategoryNames() {
@@ -555,12 +564,21 @@ function updateElementNames() {
 
 function updateModalDisplay() {
     // 更新當前顯示的元素信息中的分類名稱和元素名稱
-    const catIndex = currentElement.catId;
-    const catName = i18n.getCategoryName(catIndex);
-    document.getElementById('m-cat').textContent = catName;
-    
-    // 更新元素名稱
-    document.getElementById('m-name').textContent = i18n.getElementName(currentElement);
+    if (currentElement) {
+        const catName = i18n.getCategoryName(currentElement.catId);
+        document.getElementById('m-cat').textContent = catName;
+        document.getElementById('m-cat').style.borderColor = currentElement.cat.color;
+        document.getElementById('m-cat').style.color = currentElement.cat.color;
+        
+        // 更新元素名稱
+        document.getElementById('m-name').innerText = i18n.getElementName(currentElement);
+        // 如果是英文模式，在英文名稱旁邊顯示中文；否則在中文名稱旁邊顯示英文
+        if (i18n.currentLang === 'en') {
+            document.getElementById('m-en-name').innerText = currentElement.name; // 簡體中文
+        } else {
+            document.getElementById('m-en-name').innerText = currentElement.enName; // 英文
+        }
+    }
 }
 
 // === 启动应用 ===
