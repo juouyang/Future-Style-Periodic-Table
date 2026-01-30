@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景：深色賽博朋克風格 -->
+  <rect width="192" height="192" fill="#0a0e27"/>
+  
+  <!-- 周期表網格和元素的象徵性表示 -->
+  <!-- 第一行 -->
+  <rect x="20" y="20" width="32" height="32" fill="#ff5252" opacity="0.8" rx="2"/>
+  <text x="36" y="42" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle" font-family="Arial">H</text>
+  
+  <rect x="140" y="20" width="32" height="32" fill="#b33939" opacity="0.8" rx="2"/>
+  <text x="156" y="42" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle" font-family="Arial">He</text>
+  
+  <!-- 第二行 -->
+  <rect x="20" y="60" width="32" height="32" fill="#ffb142" opacity="0.8" rx="2"/>
+  <text x="36" y="82" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle" font-family="Arial">Li</text>
+  
+  <rect x="140" y="60" width="32" height="32" fill="#ffda79" opacity="0.8" rx="2"/>
+  <text x="156" y="82" font-size="16" font-weight="bold" fill="#000" text-anchor="middle" font-family="Arial">C</text>
+  
+  <!-- 第三行 -->
+  <rect x="20" y="100" width="32" height="32" fill="#706fd3" opacity="0.8" rx="2"/>
+  <text x="36" y="122" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle" font-family="Arial">Fe</text>
+  
+  <rect x="140" y="100" width="32" height="32" fill="#34ace0" opacity="0.8" rx="2"/>
+  <text x="156" y="122" font-size="16" font-weight="bold" fill="#000" text-anchor="middle" font-family="Arial">Si</text>
+  
+  <!-- 第四行 -->
+  <rect x="20" y="140" width="32" height="32" fill="#33d9b2" opacity="0.8" rx="2"/>
+  <text x="36" y="162" font-size="16" font-weight="bold" fill="#000" text-anchor="middle" font-family="Arial">Au</text>
+  
+  <rect x="140" y="140" width="32" height="32" fill="#218c74" opacity="0.8" rx="2"/>
+  <text x="156" y="162" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle" font-family="Arial">Cl</text>
+  
+  <!-- 中心裝飾：原子象徵 -->
+  <circle cx="96" cy="96" r="20" fill="none" stroke="#cd84f1" stroke-width="2" opacity="0.6"/>
+  <circle cx="96" cy="96" r="14" fill="none" stroke="#f78fb3" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="96" cy="75" r="3" fill="#ff5252"/>
+  <circle cx="110" cy="100" r="3" fill="#706fd3"/>
+  <circle cx="85" cy="110" r="3" fill="#34ace0"/>
+  
+  <!-- 邊框：科技感的邊線 -->
+  <rect x="8" y="8" width="176" height="176" fill="none" stroke="#cd84f1" stroke-width="2" opacity="0.4" rx="8"/>
+</svg>
