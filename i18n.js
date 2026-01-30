@@ -141,6 +141,14 @@ const i18n = {
         return this.currentLang;
     },
     
+    // 獲取元素名稱（支持多語言）
+    getElementName: function(elementData) {
+        if (this.currentLang === 'zh-TW' && elementData.nameZhTW) {
+            return elementData.nameZhTW;
+        }
+        return elementData.name;
+    },
+    
     // 初始化（從 localStorage 讀取保存的語言設置）
     init: function() {
         const saved = localStorage.getItem('language');

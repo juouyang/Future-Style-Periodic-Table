@@ -104,7 +104,7 @@ function init() {
         el.innerHTML = `
             <div class="atomic-number">${e.idx}</div>
             <div class="symbol" style="color:${e.cat.color}">${e.sym}</div>
-            <div class="name">${e.name}</div>
+            <div class="name">${i18n.getElementName(e)}</div>
             <div class="detail-val"></div>
         `;
         el.onclick = () => showModal(e);
@@ -369,7 +369,7 @@ function showModal(data) {
 
     document.getElementById('m-symbol').innerText = data.sym;
     document.getElementById('m-symbol').style.color = data.cat.color;
-    document.getElementById('m-name').innerText = data.name;
+    document.getElementById('m-name').innerText = i18n.getElementName(data); // 使用 i18n 獲取元素名稱
     document.getElementById('m-en-name').innerText = data.enName;
     document.getElementById('m-cat').innerText = i18n.getCategoryName(data.catId); // 使用 i18n 獲取分類名稱
     document.getElementById('m-cat').style.borderColor = data.cat.color;
@@ -518,6 +518,9 @@ function updateUIText() {
     // 更新圖例中的分類名稱
     updateCategoryNames();
     
+    // 更新所有元素卡片中的元素名稱
+    updateElementNames();
+    
     // 重新顯示當前選中的元素（如果有的話）
     if (currentActiveCategory !== null) {
         const modal = document.getElementById('modal');
@@ -536,11 +539,23 @@ function updateCategoryNames() {
     });
 }
 
+function updateElementNames() {
+    // 更新週期表中所有元素的名稱
+    document.querySelectorAll('.element .name').forEach((nameEl, idx) => {
+        if (elements[idx]) {
+            nameEl.textContent = i18n.getElementName(elements[idx]);
+        }
+    });
+}
+
 function updateModalDisplay() {
-    // 更新當前顯示的元素信息中的分類名稱
+    // 更新當前顯示的元素信息中的分類名稱和元素名稱
     const catIndex = currentElement.catId;
     const catName = i18n.getCategoryName(catIndex);
     document.getElementById('m-cat').textContent = catName;
+    
+    // 更新元素名稱
+    document.getElementById('m-name').textContent = i18n.getElementName(currentElement);
 }
 
 // === 启动应用 ===
